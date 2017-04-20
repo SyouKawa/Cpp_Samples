@@ -1,3 +1,4 @@
+#include"usual_public_functions.h"
 #include"titles_check_functions.h"
 using namespace std;
 
@@ -9,19 +10,16 @@ void title_05() {
 
 	for (int i = 0; i < n; ++i) {
 		int temp(0);
-		printf("And Please No.%d number: ", i+1
-		);
+		printf("And Please No.%d number: ", i+1);
 		cin >> temp;
 		input_num.push_back(temp);
 		//debug using/ printf("%d  ", input_num[i]);
 	}
+	//Swap
+	iter2_in_vector_swap_int(input_num);
 
-	for (vector<int>::iterator iter = input_num.begin(); iter != input_num.end()-1; ++iter) {
-		if (*iter > *(iter + 1)) {
-			int temp(0);
-			temp = *iter;
-			*iter = *(iter + 1);
-			*(iter + 1) = temp;
-		}
-	}
+	printf("The new order is: ");
+	output_vector_int(input_num);
+
+	system("pause");
 }
