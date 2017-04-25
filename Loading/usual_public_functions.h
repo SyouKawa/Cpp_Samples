@@ -7,5 +7,7 @@
 void output_vector_int(std::vector<int>& output_vector);
 void iter2_in_vector_swap_int(std::vector<int>& input_num);
 std::vector<int>& check_leap(int & left_bound, int & right_bound, std::vector<int>& leap);
+void get_bound(int&left_bound, int&right_bound);
+void output_end2begin(const std::string temp_string);
 
 #endif // !__USUAL_PUBLIC_FUNCTIONS_H_

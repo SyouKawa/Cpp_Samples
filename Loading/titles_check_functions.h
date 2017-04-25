@@ -16,4 +16,12 @@ void title_05();
 
 /***Title - 12***/
 void title_12();
+
+/***title - 13***/
+void title_13();
+
+void title_27();
+
+/***other titles***/
+//void uuc335_test();
 #endif // !__TITLE_CHECK_FUNCTIONS_H_
