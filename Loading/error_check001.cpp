@@ -2,27 +2,21 @@
 using namespace std;
 void ff(int n);
 void test() {
-	//char c;
-	//int count(0);
-	//char vector[10];
-	//while ((c = getchar()) != EOF&&c != '\n') {
-		//putchar(c);
-		//vector[count++]=c;
-	//}
-	//for (int i = 0; i != (sizeof(vector) / sizeof(char)); i++) { printf("%c", vector[i]); }
 	int n;
 	cin >> n;
-	ff(n);
+	re(n);
 }
-void ff(int n) {
+void re(int n) {
 	char temp_s;
+	char c=getchar();
+	while (c == '\n') c = getchar();
 	if (n <= 1) {
-		temp_s = getchar();
+		temp_s = c;
 		printf("%c", temp_s);
 	}
 	else {
-		temp_s = getchar();
-		ff(n - 1);
+		temp_s = c;
+		re(n - 1);
 		printf("%c", temp_s);//first.get -> final.output
 	}
 	//puts("\n\n");
