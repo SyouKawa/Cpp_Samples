@@ -9,7 +9,7 @@ void title_61() {
 	cin >> n;//original num;
 	line_num = n;
 	//1. create the output array.(ignore the first line.)
-	vector<char*> angle;
+	vector<char*> trangle;
 
 
 	//2. set per-line memory.
@@ -22,17 +22,32 @@ void title_61() {
 			size_t size_byte = _msize(temp);
 			//debug using/ printf("%d\n", size);
 			//debug using/ printf("%d\n\n", size_byte);
-			angle.push_back(temp);
+			trangle.push_back(temp);
 		}
 		if (i != 0) {
 			temp = (char*)malloc(size);
 			size_t size_byte = _msize(temp);
 			//debug using/ printf("%d\n", size);
 			//debug using/printf("%d\n\n", size_byte);
-			angle.push_back(temp);
+			trangle.push_back(temp);
 		}
 	}
-	printf("%d\n", angle.size());
+	printf("%d\n", trangle.size());
 
+	//3. set every row's data;
+	//use size_byte to init~
+	for (int i=1;i<trangle.size();i++) {
+		for (int j(0);j<_msize(trangle[i]);j++) {
+			if (j < trangle.size() - i) {
+				trangle[i][j] = ' ';
+				printf("%c", trangle[i][j]);
+			}
+			else {
+				trangle[i][j] = '1';
+				printf("%c", trangle[i][j]);
+			}
+		}
+		printf("\n");
+	}
 	//free(angle);
 }
