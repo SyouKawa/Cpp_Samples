@@ -11,11 +11,10 @@ void title_B34(){
 	list *student_list = new list[size];
 
 	for (int i(0);i<size;i++) {
-	(student_list+i)->student.score = 100;
+	cin >> (student_list + i)->student.ID >> (student_list + i)->student.score;
 	if(i<size-1) (student_list+i)->Next = student_list+i+1;
 	else (student_list + i)->Next = NULL;
-	(student_list+i)->student.ID="20170124320";
 	}
 	for(size_t i(0);i<size;i++)
-		cout << student_list->student.ID << " : " << student_list->student.score << endl;
+		cout << (student_list+i)->student.ID << " : " << (student_list+i)->student.score << endl;
 }
