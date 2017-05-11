@@ -26,7 +26,7 @@ int main() {
 		imshow(pic_sources[i].pic_name, pic_sources[i].srcImage);
 	}*/
 
-	int minHessian = 1000;
+	int minHessian = 500;
 	SurfFeatureDetector detector(minHessian);  
 	SurfDescriptorExtractor extractor;
 	for (int i(0); i < pic_name.size(); ++i) {
@@ -48,7 +48,6 @@ int main() {
 		printf(">Max dist 最优匹配 : %f \n", max_dist);
 		printf(">Min dist 最差匹配 : %f \n", min_dist);
 
-		//【7】存下匹配距离小于3*min_dist的点对
 		std::vector< DMatch > good_matches;
 		for (int i = 0; i < pic_sources[i].descriptors.rows; i++)
 		{
@@ -58,9 +57,46 @@ int main() {
 			}
 		}
 		cout << "匹配的特征点为：" << good_matches.size() << "个。" << endl << endl;
-		if (good_matches.size() > 2) cout << pic_name[0] << endl;
-		good_matches.clear();
-		matches.clear();
+		//if (good_matches.size() > 2) cout << pic_name[0] << endl;
+		//good_matches.clear();
+		//matches.clear();
+		//for (int i(0); i < pic_name.size(); ++i) {
+			//绘制出匹配到的关键点
+			Mat img_matches;
+			drawMatches(query.srcImage, query.keypoints, pic_sources[0].srcImage, pic_sources[0].keypoints,
+				good_matches, img_matches, Scalar::all(-1), Scalar::all(-1),
+				vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS);
+
+			//定义两个局部变量
+			vector<Point2f> obj;
+			vector<Point2f> scene;
+
+			//从匹配成功的匹配对中获取关键点
+			for (unsigned int i = 0; i < good_matches.size(); i++)
+			{
+				obj.push_back((pic_sources[0].keypoints)[good_matches[i].queryIdx].pt);
+				scene.push_back((query.keypoints)[good_matches[i].trainIdx].pt);
+			}
+
+			Mat H = findHomography(obj, scene, CV_RANSAC);//计算透视变换
+
+														  //从待测图片中获取角点
+			vector<Point2f> obj_corners(4);
+			obj_corners[0] = cvPoint(0, 0); obj_corners[1] = cvPoint(query.srcImage.cols, 0);
+			obj_corners[2] = cvPoint(query.srcImage.cols, query.srcImage.rows); obj_corners[3] = cvPoint(0, query.srcImage.rows);
+			vector<Point2f> scene_corners(4);
+
+			//进行透视变换
+			perspectiveTransform(obj_corners, scene_corners, H);
+
+			//绘制出角点之间的直线
+			line(img_matches, scene_corners[0] + Point2f(static_cast<float>(query.srcImage.cols), 0), scene_corners[1] + Point2f(static_cast<float>(query.srcImage.cols), 0), Scalar(255, 0, 123), 4);
+			line(img_matches, scene_corners[1] + Point2f(static_cast<float>(query.srcImage.cols), 0), scene_corners[2] + Point2f(static_cast<float>(query.srcImage.cols), 0), Scalar(255, 0, 123), 4);
+			line(img_matches, scene_corners[2] + Point2f(static_cast<float>(query.srcImage.cols), 0), scene_corners[3] + Point2f(static_cast<float>(query.srcImage.cols), 0), Scalar(255, 0, 123), 4);
+			line(img_matches, scene_corners[3] + Point2f(static_cast<float>(query.srcImage.cols), 0), scene_corners[0] + Point2f(static_cast<float>(query.srcImage.cols), 0), Scalar(255, 0, 123), 4);
+
+			//显示最终结果
+			imshow("show", img_matches);
 	}
 
 	cv::waitKey();
@@ -82,7 +118,7 @@ vector<string>& split_input(string& c, vector<string>& filename) {
 }
 
 PIC& Query_init(PIC& query) {
-	int minHessian = 9000;
+	int minHessian = 500;
 	SurfFeatureDetector detector(minHessian);
 	SurfDescriptorExtractor extractor;
 	detector.detect(query.srcImage, query.keypoints);
