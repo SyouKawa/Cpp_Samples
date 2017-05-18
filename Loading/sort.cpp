@@ -12,25 +12,51 @@ int& Median3(vector<Student_info>& students, int Left, int Right) {
 	return students[Right - 2].score;
 }
 
-#define Cutoff 3
-void Qsort(vector<Student_info>& student,int Left, int Right) {
-	int i(0), j(0);
-	int Pivot;
-	if (Left + Cutoff <= Right) {
-		Pivot = Median3(student, Left, Right);
-		i = Left;
-		j = Right - 1;
-		for (;;) {
-			while (student[++i].score < Pivot) {}
-			while (student[--j].score > Pivot) {}
-			if (i < j) swap(student[i], student[j]);
-			else break;
-		}
-		swap(student[i], student[Right - 1]);
-		//left-part resort
-		Qsort(student, Left, i - 1);
-		//right-part resort
-		Qsort(student, i, Right);
-	}
-	//else
+void swap(Student_info* a, Student_info* b) {
+	Student_info student_temp;
+	student_temp = *a;
+	*a = *b;
+	*b = student_temp;
 }
+
+void Qsort(vector<Student_info>&student, int Left, int Right) {
+	if (Right > Left) {
+		// partition
+		int p = rand() % (Right - Left) + Left;
+		Student_info d = student[p];
+		// divide
+		swap(student[Left], student[p]);
+		int i = Left;
+		int j = i + 1;
+		while (j < Right) {
+			while (student[j].score > d.score && j < Right) j++;
+			if (j < Right) {
+				i++;
+				swap(student[i], student[j]);
+				j++;
+			}
+		}
+		swap(student[i], student[Left]);
+		Qsort(student, Left, i);
+		Qsort(student, i + 1, Right);
+	}
+	if (student[student.size()-2].score > student[student.size()-1].score) swap(student[student.size()-2], student[student.size() - 1]);
+}
+
+//#define Cutoff 3
+/*void Qsort(vector<Student_info>& student,int Left, int Right) {
+	if (Left >= Right) { return; }
+
+	int i=Left, j=Right;
+	int Pivot=student[i].score;
+	
+	while(i < j) {
+			while (i<Right &&student[i++].score <= Pivot) {}
+			while (i<Right &&student[j--].score >= Pivot) {}
+			if (i <= j)swap(student[i], student[j]);
+			else break;
+	}
+	student[i].score = Pivot;
+	Qsort(student, Left, i - 1);
+	Qsort(student, i+1, Right);
+}*/

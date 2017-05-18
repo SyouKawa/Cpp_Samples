@@ -1,13 +1,14 @@
 #include"titles_check_functions.h"
 #include"Student_info.h"
 #include"sort.h"
+#include<unordered_map>
 using namespace std;
 
 Student_info split_input(string& c, Student_info& student);
 //void scores_list(vector<Student_info>& students, vector<int>&scores);
 int string2int(string&source);
-int& Median3(vector<Student_info>& students, int Left, int Right);
-void swap(Student_info* a, Student_info* b);
+//int& Median3(vector<Student_info>& students, int Left, int Right);
+//void swap(Student_info* a, Student_info* b);
 
 void title_student04() {
 	vector<Student_info> student_list;
@@ -26,12 +27,18 @@ void title_student04() {
 	vector<int>scores(0);
 	//scores_list(student_list, scores);
 	cout << Median3(student_list, 0, student_list.size()) << endl;
-	Qsort(student_list, 0, scores.size());
+	Qsort(student_list, 0,student_list.size()-1);//student_list.size()-1);
 
 	for (vector<Student_info>::iterator iter = student_list.begin(); iter != student_list.end(); iter++) {
 		cout << iter->ID << " : " << iter->s_score << endl;
 	}
 }
+
+/*void RadixSort(vector<Student_info>&student) {
+	unordered_map<int, vector<Student_info> > test_map;
+
+}*/
+
 Student_info split_input(string& c, Student_info& student) {
 	string::size_type i(0);
 	int flag(0);
@@ -65,9 +72,9 @@ int string2int(string&source) {
 	return temp;
 }
 
-void swap(Student_info* a, Student_info* b) {
+/*void swap(Student_info* a, Student_info* b) {
 	Student_info student_temp;
 	student_temp = *a;
 	*a = *b;
 	*b = student_temp;
-}
+}*/
