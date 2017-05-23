@@ -26,11 +26,41 @@ void title_student04() {
 
 	vector<int>scores(0);
 	//scores_list(student_list, scores);
-	cout << Median3(student_list, 0, student_list.size()) << endl;
-	Qsort(student_list, 0,student_list.size()-1);//student_list.size()-1);
-
+	//cout << Median3(student_list, 0, student_list.size()) << endl;
+	/*Qsort(student_list, 0,student_list.size()-1);//student_list.size()-1);
 	for (vector<Student_info>::iterator iter = student_list.begin(); iter != student_list.end(); iter++) {
 		cout << iter->ID << " : " << iter->s_score << endl;
+	}*/
+
+	/*Qsort2(student_list, 0, student_list.size() - 1);
+	for (vector<Student_info>::iterator iter = student_list.begin(); iter != student_list.end(); iter++) {
+		cout << iter->ID << " : " << iter->s_score << endl;
+	}*/
+
+	/*Insertion(student_list);
+	for (vector<Student_info>::iterator iter = student_list.begin(); iter != student_list.end(); iter++) {
+		cout << iter->ID << " : " << iter->s_score << endl;
+	}*/
+
+	/*Bubble(student_list);
+	for (vector<Student_info>::iterator iter = student_list.begin(); iter != student_list.end(); iter++) {
+	cout << iter->ID << " : " << iter->s_score << endl;
+	}*/
+
+	/*Select(student_list);
+	for (vector<Student_info>::iterator iter = student_list.begin(); iter != student_list.end(); iter++) {
+		cout << iter->ID << " : " << iter->s_score << endl;
+	}*/
+	//vector<int> a = { 43,1,3,67,8,12,21 };
+	//vector<int> b = { 32,11,6,7,12,90,1 };
+	
+	cout << endl << endl;
+	
+	vector<Student_info> temps(0);
+	//Merge_sort(student_list,temps,0,student_list.size()-1);
+	Merge_part(student_list, temps, 0, student_list.size() - 1);
+	for (vector<Student_info>::iterator iter = temps.begin(); iter != temps.end(); iter++) {
+	cout << iter->ID << " : " << iter->s_score << endl;
 	}
 }
 
@@ -71,10 +101,3 @@ int string2int(string&source) {
 	}
 	return temp;
 }
-
-/*void swap(Student_info* a, Student_info* b) {
-	Student_info student_temp;
-	student_temp = *a;
-	*a = *b;
-	*b = student_temp;
-}*/
