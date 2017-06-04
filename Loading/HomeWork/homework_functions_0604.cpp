@@ -130,3 +130,50 @@ void print_diamond_2() {
 		if (0 - y == num - 1) break;
 	}
 }
+
+void print_diamond_3() {
+	int middle(0);
+	printf("Please input the length of middle you want:");
+	cin >> middle;
+	//part-1
+	int trangle_bottom = ((middle + 1) / 2)+1;
+	int bottom_flower = trangle_bottom / 2;
+	for (int line(bottom_flower),space(bottom_flower); line != 0; line--, space--) {
+		for (int i(space); i != 0; i--) printf(" ");
+
+		//middle part
+		for (int flower(trangle_bottom-2*space);flower!=0;flower--) {
+			if (flower % 2 == 0) printf(" ");
+			else printf("*");
+		}
+
+		printf(" ");
+
+		for (int j(space); j != 0; j--) printf(" ");
+
+		//double:
+		for (int i(space); i != 0; i--) printf(" ");
+
+		//middle part
+		for (int flower(trangle_bottom - 2 * space); flower != 0; flower--) {
+			if (flower % 2 == 0) printf(" ");
+			else printf("*");
+		}
+
+		printf(" ");
+
+		for (int j(space); j != 0; j--) printf(" ");
+
+		cout << endl;
+	}
+
+	//part-2
+	for (int line(middle+3),line_num(0); line >= (middle+3+1) / 2; line--,line_num++) {
+		for (int i(line_num); i != 0; i--)printf(" ");
+		for (int this_line(line-line_num); this_line > 0; this_line--) {
+			if (this_line % 2 == 0)printf(" ");
+			else printf("*");
+		}
+		cout << endl;
+	}
+}

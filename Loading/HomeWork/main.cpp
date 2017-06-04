@@ -7,7 +7,8 @@ void main() {
 	//multi_result();
 	//print_diamond_Basic();
 	//print_diamond_1();
-	print_diamond_2();
+	//print_diamond_2();
+	print_diamond_3();
 	//system("pause");
 	getchar();
 	getchar();
