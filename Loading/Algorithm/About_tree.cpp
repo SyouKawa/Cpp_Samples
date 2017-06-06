@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include<stdlib.h>
 
 #define dim(x) sizeof(x) / sizeof(x[0])
 
@@ -9,7 +10,7 @@ struct NODE
 	NODE *pRChild;
 };
 
-void tree_init(NODE **a_tree, char*data);
+int tree_init(NODE **a_tree, char*data);
 
 
 void PreOrder(NODE *node)
@@ -70,16 +71,17 @@ int GetNodeDepth(NODE *node)
 	return (iDepth + 1);  //add root
 }
 
-void tree_init(NODE **a_tree, const char*data) {
+int tree_init(NODE **a_tree, const char*data) {
 	for (int i(0); i < dim(a_tree); i++) {//dim(x)  means sizeof(array_or_sth_like_array)/sizeof(element) 
 		a_tree[i] = new NODE();
 		a_tree[i]->iData = data[i];
 		a_tree[i]->pLChild = NULL;
 		a_tree[i]->pRChild = NULL;
 	}
+	return 0;
 }
 
-void main() {
+void tree_check() {
 	//1.generate a tree
 	char data[] = { 'A','B','C','D','E','F','G','H','I','J' };
 	char pid[] = { NULL,'A','A','B','B','C','C','D','D','E' };
@@ -112,4 +114,18 @@ void main() {
 			}
 		}
 	}
+
+	printf("PreOrder:\n");
+	PreOrder(root);
+	printf("\n\n");
+
+	printf("InOrder:\n");
+	InOrder(root);
+	printf("\n\n");
+
+	printf("LastOrder:\n");
+	LastOrder(root);
+	printf("\n\n");
+
+	system("pause");
 }
