@@ -9,7 +9,9 @@ struct NODE
 	NODE *pRChild;
 };
 
-//前序遍历: 根左右(先访问根, 然后从左至右访问所有子树)
+void tree_init(NODE **a_tree, char*data);
+
+
 void PreOrder(NODE *node)
 {
 	if (node == NULL) return;
@@ -18,7 +20,7 @@ void PreOrder(NODE *node)
 	PreOrder(node->pRChild);
 }
 
-//中序遍历: 左根右(先左边第一个子树, 然后访问根, 再从左至右访问剩下的其他子树)
+
 void InOrder(NODE *node)
 {
 	if (node == NULL) return;
@@ -30,7 +32,6 @@ void InOrder(NODE *node)
 	InOrder(node->pRChild);
 }
 
-//后序遍历: 左右根(先从左至右访问所有子树, 然后访问根)
 void LastOrder(NODE *node)
 {
 	if (node == NULL) return;
@@ -41,7 +42,7 @@ void LastOrder(NODE *node)
 	printf("%c ", node->iData);
 }
 
-//求树的节点数量
+//the number of node
 int GetNodeNum(NODE *node)
 {
 	int nCount = 0;
@@ -54,18 +55,61 @@ int GetNodeNum(NODE *node)
 	return nCount;
 }
 
-//求二叉树的深度(高度)
-//1. 若二叉树为空, 则高度为0
-//2. 若二叉树不为空, 则高度应为其左右子树高度的最大值加1
+//Height
+//1. tree empty, h=0
+//2. tree not empty,h=max(LEFT,RIGHT)+1 
 int GetNodeDepth(NODE *node)
 {
 	if (node == NULL) return 0;
 
-	int iLDepth = GetNodeDepth(node->pLChild);  //遍历左边
-	int iRDepth = GetNodeDepth(node->pRChild);  //遍历右边
+	int iLDepth = GetNodeDepth(node->pLChild); 
+	int iRDepth = GetNodeDepth(node->pRChild);
 
 	int iDepth = iLDepth > iRDepth ? iLDepth : iRDepth;
 
-	return (iDepth + 1);  //加1表示根节点
+	return (iDepth + 1);  //add root
 }
 
+void tree_init(NODE **a_tree, const char*data) {
+	for (int i(0); i < dim(a_tree); i++) {//dim(x)  means sizeof(array_or_sth_like_array)/sizeof(element) 
+		a_tree[i] = new NODE();
+		a_tree[i]->iData = data[i];
+		a_tree[i]->pLChild = NULL;
+		a_tree[i]->pRChild = NULL;
+	}
+}
+
+void main() {
+	//1.generate a tree
+	char data[] = { 'A','B','C','D','E','F','G','H','I','J' };
+	char pid[] = { NULL,'A','A','B','B','C','C','D','D','E' };
+	NODE *root = NULL;
+	NODE *tree[10];
+
+	//1.1 generate 10 node first(init no child)
+	// put them into tree array.
+	//tree_init(tree,data);
+
+	int i, j;
+	for (i = 0; i < dim(data); i++)
+	{
+		tree[i] = new NODE();
+		tree[i]->iData = data[i];
+		tree[i]->pLChild = NULL;
+		tree[i]->pRChild = NULL;
+	}
+
+	//1.2 link
+	for (int i(0); i < dim(data); i++) {
+		if (pid[i] == NULL) {
+			root = tree[i];
+			continue;
+		}
+		for (int j(0); j < dim(data); j++) {
+			if (pid[i] == tree[j]->iData) {
+				if (tree[j]->pLChild == NULL) { tree[j]->pLChild = tree[i]; break; }
+				if (tree[j]->pRChild == NULL) { tree[j]->pRChild = tree[i]; break; }
+			}
+		}
+	}
+}
