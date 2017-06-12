@@ -229,3 +229,29 @@ link_list last_4(link_list*head) {
 	}
 	return *temp;
 }
+
+void add_element(Students** head,FILE *input) {
+	
+	Students *temp = (Students*)malloc(sizeof(Students));
+	memset(temp, 0, sizeof(Students));
+	temp->init();
+	
+	if (NULL == *head) {
+		temp->file_init(input);
+		*head = temp;
+		(*head)->next = NULL;
+	}
+	else {
+		temp->file_init(input);
+		temp->next = *head;
+		*head = temp;
+	}
+}
+
+void print_students_data(Students *head) {
+	while(head != NULL) {
+		head->output();
+		head = head->next;
+	}
+}
+

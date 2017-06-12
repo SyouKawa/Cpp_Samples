@@ -10,14 +10,32 @@ struct link_list
 
 struct Students
 {
-	char IDcode[12] = "20170604400";
+	char IDcode[12] = "00000000000";
 	char name[10]="XXXX XXXX";
 	int count = 0;
 	char scores_s[3][4] = {"000","000","000"};
 	int scores[3] = { 0 };
 	int sum = 0;
+	Students *next = NULL;
 
-	void input_int() {
+	void init() {
+		for (int i = 0; i < 12; i++) {
+			IDcode[i] = '0';
+		}
+		for (int i = 0; i < 11; i++) {
+			name[i] = 'X';
+		}
+		for (int i=0;i<3;i++) {
+			for (int j = 0; j < 4; j++) {
+				scores_s[i][j] = '0';
+			}
+		}
+		count = 0;
+		scores[3] = { 0 };
+		sum = 0;
+		next = NULL;
+	}
+	void input_init() {
 		printf("Please input the data of this student(IDcode,name,math,english,chinese, divide with ','): ");
 		scanf("%s", &IDcode);
 		scanf("%s", &name);
@@ -72,5 +90,7 @@ link_list* Create_in_order(link_list *head, int number);
 link_list *list_together(link_list*link1, link_list *link2);
 link_list *get_list_in_order(link_list *head);
 link_list last_4(link_list*head);
+void add_element(Students** head, FILE *input);
+void print_students_data(Students *head);
 
 #endif // !__HOMEWORK_FUNCTIONS_LOADING_H__
