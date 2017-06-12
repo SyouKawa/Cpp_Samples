@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<iostream>
 #include<vector>
+#include<string>
 #include<time.h>
 
 using namespace std;
@@ -26,7 +27,7 @@ void sign_1(int&num_count,int&alpha_count,int&other_count) {
 		else if (('A' <= input_sign && input_sign <= 'Z') || ('a' <= input_sign && input_sign <= 'z')) alpha_count++;
 		else other_count++;
 	}
-	cout << " " << num_count << " " << alpha_count << " " << other_count << endl;
+	//cout << " " << num_count << " " << alpha_count << " " << other_count << endl;
 }
 
 void swap(int* a, int* b) {
@@ -54,7 +55,12 @@ void sign_2(int&num_count, int&alpha_count, int&other_count) {
 
 	for (int i(count[0]); i != 0; i--) {
 		for (int j(0); j != 0; j--) printf(" ");
-		if (i == count[0]) printf("  %d  \n", count[0]);
+		if (i == count[0]) {
+			if (i == count[1] && i == count[2]) printf("  %d      %d      %d  \n",count[0],count[1],count[2]);
+			else if (i == count[1]) printf("  %d      %d  \n",count[0],count[1]);
+			else printf("  %d  \n", count[0]);
+		}
+		
 		printf("*****");
 
 		if (i <= count[1]+1) {
@@ -226,9 +232,260 @@ void No5_101() {
 	cout << find << endl;
 }
 
-void Day_th() {
+int Day_th(int *year, int *month, int *date) {
+Label:
+	printf("%d-%d-%d\n\n", *year, *month, *date);
+	int day_sum(0);
+	for (int i=1;i<*month;i++) {
+		if (2 != i) {
+			if (i % 2 == 0 && i <= 7) day_sum+=30;
+			if (i % 2 != 0 && i <= 7) day_sum += 31;
+			if (i % 2 == 0 && i > 7 && i <= 12) day_sum += 31;
+			if (i % 2 != 0 && i > 7 && i <= 12) day_sum += 30;
+		}
+		else if (2 == i) {
+			if (*year % 4 == 0 && *year % 100 != 0 || *year % 400 == 0) day_sum += 29;
+			else day_sum += 28;
+		}
+		else {
+			printf("ERROR MONTH.\n");
+			puts("Please check and input again.");
+			goto Label;
+		}
+	}
+	day_sum += *date;
+	//printf("The sum of days is:%d\n", day_sum);
+	return day_sum;
+}
+
+void year2year_day_sum() {
+	int year1(0), month1(0), date1(0);
+	int year2(0), month2(0), date2(0);
+	
+	int day_sum1 = 0;
+	int day_sum2 = 0;
+	int result = 0;
+
+	printf("Please input year1 month1 date1( divide with space): ");
+	cin >> year1 >> month1 >> date1;
+	printf("Please input year2 month2 date2( divide with space): ");
+	cin >> year2 >> month2 >> date2;
+	
+	day_sum1 = Day_th(&year1, &month1, &date1);
+	day_sum2 = Day_th(&year2, &month2, &date2);
+	//if (month2<=2&&(year2 % 4 == 0 && year2 % 100 != 0 || year2 % 400 == 0)) add_days-=1;
+
+	result = (year2 - year1) * 365 + day_sum2 - day_sum1+(year2 - year1) / 4;
+	printf("The difference between %d-%d-%d and %d-%d-%d is :%d\n", year1, month1, date1, year2, month2, date2,result);
+}
+
+void what_Day_is_it_today() {
 	int year(0), month(0), date(0);
+	int day_sum = 0;
+	int week(0);
+
+	//好长啊，写完函数再回来改。/char week_day[7][3] = { {'S','U','N'},{'','',''},{'','',''},{,,,},{,,,},{,,,},{,,,} };
+	vector<string>week_day = { "SUN","MON","TUE","WED","THU","FRI","SAT" };
+
+	printf("Please input year1 month1 date1( divide with space): ");
+	cin >> year >> month >> date;
+	day_sum = Day_th(&year, &month, &date);
+	week = day_sum / 7;
+	if (week % 7 != 0) week += 1;
+	
+	cout <<"This week is the "<< week <<"th week,and today is "<< week_day[(day_sum-1)%7] <<" ."<< endl;
+}
+
+void day_2_date() {
+	int month_days[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+	int year(0), month(0), date(0);
+	int day_sum = 0;
+	int add_days = 0;
 	printf("Please input year month date( divide with space): ");
 	cin >> year >> month >> date;
-	printf("%d-%d-%d", year, month, date);
+	day_sum = Day_th(&year, &month, &date);
+	printf("Please input the number of days you wanna add: ");
+	cin >> add_days;
+	day_sum += add_days;
+	if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) month_days[1] = 29;
+
+	//day->date
+	int mon_pos(0);
+	for (;mon_pos<12&&day_sum>=month_days[mon_pos];mon_pos++) {
+			day_sum -= month_days[mon_pos];
+	}
+	if (0 == day_sum) day_sum = month_days[mon_pos-1];
+	printf("From %d-%d-%d ,add %d day ->%d-%d-%d", year, month, date, add_days, year, mon_pos, day_sum);
+	//cout << mon_pos+1 << " "<< day_sum << endl;
+}
+
+void month_Calendar(int year,int month) {
+	int month_days[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+	vector<string>week_day = { "SUN","MON","TUE","WED","THU","FRI","SAT" };
+	int day_sum = 0;
+	//printf("Please input year month date( divide with space): ");
+	//cin >> year >> month;
+	if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) month_days[1] = 29;
+
+	//1. init day_sum->this month : 1th (  Day  )
+	for (int i=0;i<month-1;i++) {
+		day_sum += month_days[i];
+	}
+
+	//2.output Calendar
+	printf("\n\n%d  SUN MON TUE WED THU FRI SAT\n   ", month);
+	int today(0);
+	int line_in_count(0);
+		
+	
+	for (int i(1); i <= month_days[month - 1]; i++) {
+		day_sum += i;
+		
+		if(i==1) {//   1st <---> week_day tran
+			today = (day_sum - 1) % 7;
+			for (int j(0); j <= week_day.size(); j++) {
+				if (today == j) {
+					printf("%3d ", i);
+					line_in_count++;
+					break;
+				}
+				else {	//print space
+					printf("    ");
+					line_in_count++;
+				}
+			}
+		}
+		if (line_in_count == 7) { 
+			printf("\n   "); 
+			line_in_count = 0; 
+		
+		}
+		else if(i!=1) {
+			printf("%3d ", i);
+			line_in_count++;
+		}
+
+	}
+	printf("\n");
+
+
+}
+
+void The_Calendar() {
+	int year = 0;
+	int month_left = 0;
+	int month_right = 0;
+	int day_sum_left = 0;
+	int day_sum_right = 0;
+	int month_days[12] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
+	vector<string>week_day = { "SUN","MON","TUE","WED","THU","FRI","SAT" };
+	printf("Please input the year whose calendar you want to know:");
+	cin >> year;
+	if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) month_days[1] = 29;
+
+
+	printf("|------------------The Calendar of Year 2014 ---------------------|\n");
+	for (int week_header = 1; week_header <= 6; week_header++) {
+		printf("|%2d  SUN MON TUE WED THU FRI SAT  %2d  SUN MON TUE WED THU FRI SAT |\n", week_header, week_header + 6);
+		//printf("|%2d  SUN MON TUE WED THU FRI SAT  %2d  SUN MON TUE WED THU FRI SAT |\n", week_header, week_header + 6);
+		month_left = week_header;
+		month_right = week_header + 6;
+
+		for (int i = 0; i < month_left - 1; i++) {
+			day_sum_left += month_days[i];
+		}
+		int today_left = 0;
+		int today_right = 0;
+		int line_in_count = 0;
+		int line(0);
+
+		//pos
+		int left = 1;
+		int right = 1;
+		int left_in = 0;
+		int right_in = 0;
+
+		//左侧
+Label:
+ 		printf("|    ");
+		
+		for (int i = 0; i < month_left - 1; i++) {
+			day_sum_left += month_days[i];
+		}
+
+		for (; left <= month_days[month_left - 1]; left++) {
+			day_sum_left += left;
+			today_left = (day_sum_left - 1) % 7;
+			if (left == 1) {
+				for (; left_in <= week_day.size(); left_in++) {
+					if (today_left == left_in) {
+						printf("%3d ", left);
+						line_in_count++;
+						break;
+					}
+					else {
+						printf("    ");
+						line_in_count++;
+					}
+				}
+			}
+			else {
+				printf("%3d ", left);
+				line_in_count++;
+				if (left == month_days[month_left - 1]) {
+					for (int i((day_sum_right - 1) % 7); i < week_day.size()-1; i++) {
+						printf("    ");
+						line_in_count++;
+					}
+				}
+			}
+			if (line_in_count >= 7) {line_in_count = 0; break; }// < -------- - 跳出左侧输出
+		}
+		printf("     ");
+
+		//右侧
+		for (int i = 0; i < month_left - 1; i++) {
+			day_sum_right += month_days[i];
+		}
+
+		for (; right <= month_days[month_right - 1]; right++) {
+			day_sum_right += right;
+			today_right = (day_sum_right - 1) % 7;
+			if (right == 1) {
+				for (; right_in <= week_day.size(); right_in++) {
+					if (today_right == right_in) {
+						printf("%3d ", right);
+						line_in_count++;
+						break;
+					}
+					else {
+						printf("    ");
+						line_in_count++;
+					}
+				}
+			}
+			else {
+				printf("%3d ", right);
+				line_in_count++;
+				if (right == month_days[month_right - 1]) {
+					for (int i((day_sum_right - 1) % 7); i < week_day.size() - 1; i++) {
+						printf("    ");
+						line_in_count++;
+					}
+				}
+			}
+			if (line_in_count == 7) { printf("|"); line_in_count = 0; break; }// < -------- - 跳出左侧输出
+		}
+		printf("\n");
+		line++;
+		if (line < 6) { left++;right++; goto Label; }//<------------回到左侧继续打印
+		else {
+			left = 1;
+			right = 1;
+			left_in = 0;
+			right_in = 0;
+			line = 0;
+		}
+	}//左右块
+	//printf("\n");
 }
