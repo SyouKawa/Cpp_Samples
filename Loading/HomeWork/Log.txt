@@ -88,7 +88,7 @@ int count = Path_cacl(x,y);
 
 printf("The number of Path is: %d\n", count);*/
 
-
+/*move-out 20170611-1*/
 //int len = 0;
 //link_list *new_list = CreateList_Front();
 //output_link_list(new_list);
@@ -114,7 +114,7 @@ printf("The number of Path is: %d\n", count);*/
 //	output_link_list(new_list);
 //}
 
-/*move-out 20170611*/
+/*move-out 20170611-2*/
 /*int number = 0;
 link_list * number1=NULL;
 link_list * number2 = NULL;
@@ -126,3 +126,34 @@ number1=list_together(number1, number2);
 output_link_list(number1,num_type);
 link_list last_4_node=last_4(number1);
 printf("The node is: %d.\n", last_4_node.data);*/
+
+/*move-out  2017-06-12*/
+//int count = 0;
+//printf("Please input the number of Students you wanna save: ");
+//scanf("%d", &count);
+//Students *student_list = NULL;
+//FILE *input = fopen("Student_info.txt","r");
+//
+//for (int i=count;i!=0;i--) {
+//	add_element(&student_list, input);
+//}
+//fclose(input);
+//print_students_data(student_list);
+//puts("\n");
+//Students*temp = student_list;
+//Students* student_array = (Students*)malloc(sizeof(Students) * 5);
+//memset(student_array, 0, 5 * sizeof(Students));
+//for (int i=0;student_list!=NULL;i++,student_list=student_list->next) {
+//	memcpy(student_array + i, student_list, sizeof(Students));
+//}
+//student_list = temp;
+//Bubble_sum(student_array,5);
+//for (int i=0;i<5;i++) {
+//	student_array[i].output();
+//}
+
+//int Math_average = 0, English_average = 0, Chinese_average = 0;
+//Math_average = average_score(student_list, 0);
+//English_average = average_score(student_list, 1);
+//Chinese_average = average_score(student_list, 2);
+//printf("The average-score of Math=%d   English=%d    Chinese=%d\n", Math_average,English_average,Chinese_average);

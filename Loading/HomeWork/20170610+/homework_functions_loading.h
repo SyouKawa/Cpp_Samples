@@ -92,5 +92,12 @@ link_list *get_list_in_order(link_list *head);
 link_list last_4(link_list*head);
 void add_element(Students** head, FILE *input);
 void print_students_data(Students *head);
+link_list* delete_repeat_node(link_list *head, link_list del_node);
+int average_score(Students *head, int classes);
+void Bubble_sum(Students *student_array, size_t size);
+void repeat_node(link_list*head);
+void divide_list(link_list**src, link_list**dst);
+link_list* Big_int(link_list*num1, link_list*num2);
+void Insertion(int *a, size_t size);
 
 #endif // !__HOMEWORK_FUNCTIONS_LOADING_H__

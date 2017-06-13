@@ -56,6 +56,7 @@ link_list* delete_node(link_list* node,char deldata) {
 	while(check->data == deldata) {//head node
 		node = node->next;
 		check = node;
+		free(check);
 	}
 	while (check != NULL) {
 		prev_node = check;
@@ -255,3 +256,149 @@ void print_students_data(Students *head) {
 	}
 }
 
+link_list* delete_repeat_node(link_list *head,link_list del_node) {
+	link_list *Prev = NULL;
+	link_list *temp = head;
+	while(temp != NULL) {
+		if (temp->data == del_node.data) {
+			if (Prev == NULL) {
+				head = temp->next;
+				free(temp);
+				temp = head;
+				continue;
+			}
+			if (Prev != NULL) {
+				Prev->next = temp->next;
+				free(temp);
+				temp = Prev->next;
+				continue;
+			}
+		}
+		Prev = temp;
+		temp = temp->next;
+	}
+	temp = NULL;
+	return head;
+}
+
+int average_score(Students *head,int classes) {
+	int average_score = 0;
+	int count = 0;
+	for (;head!=NULL;head=head->next,count++) average_score += head->scores[classes];
+	return average_score / count;
+}
+
+void swaps(Students * a, Students * b) {
+	Students *student_temp=(Students*)malloc(sizeof(Students));
+	memcpy(student_temp, a, sizeof(Students));
+	memcpy(a, b, sizeof(Students));
+	memcpy(b,student_temp, sizeof(Students));
+	free(student_temp);
+	student_temp = NULL;
+}
+
+void Bubble_sum(Students *student_array,size_t size) {
+	for (int i=0; i<size; i++) {
+		for (int j=i + 1; j < size; j++)
+			if (student_array[i].sum < student_array[j].sum) 
+				swaps(student_array+i, student_array+j);
+	}
+}
+
+void round_or_not(link_list *head) {
+	link_list *step1 = head;
+	link_list *step2 = head->next;
+	while (step1 != NULL&&step2 != NULL) {
+		if (step1 == step2) { printf("There is a loop.\n"); break; }
+	}
+	printf("There not.\n");
+	return;
+}
+
+void crossing(link_list*link1,link_list*link2) {
+	link_list*temp = link2;
+	link_list*Prev = NULL;
+	while (temp != NULL) {
+		Prev = temp;
+		temp = temp->next;
+	}
+	temp = Prev;
+	temp->next = link1;
+}//loading
+
+void repeat_node(link_list*head) {
+	link_list *temp = head;
+	link_list *Prev_basic = temp;
+	for (;temp!=NULL;temp=temp->next) {
+		Prev_basic = temp;
+		head = delete_repeat_node(temp->next, *temp);
+		Prev_basic->next = head;
+		head = Prev_basic;
+	}
+}
+
+void divide_list(link_list**src,link_list**dst) {
+	int count = 1;
+	link_list *address1 = *src;
+	link_list *address2 = *dst;
+	link_list *middle = NULL;
+	link_list *Prev = NULL;
+	link_list *Prev2 = NULL;
+	for (;*src!=NULL;count++) {
+		if (count % 2 != 0) {
+			middle = (*src)->next;
+			Prev = *src;
+			*src = (*src)->next;//奇数操作不放在if里，放在else之前,这样的话，src一旦加到NUll就出去了。
+			continue;
+		}
+		*src = (*src)->next;//src经过检测不是NULL，且，是middle的下一个。
+		Prev->next = *src;
+		if (count % 2 == 0) {
+			if (*dst == NULL) {
+				*dst = middle;
+				(*dst)->next = NULL;
+				address2 = *dst;
+				Prev2 = *dst;
+			}
+			else {
+				Prev2->next = middle;
+				middle->next = NULL;
+				Prev2 = middle;
+			}
+		}
+	}
+	*src = address1;
+	*dst = address2;
+	//没有返回值，记得改成二维指针。
+}
+
+link_list* Big_int(link_list*num1,link_list*num2) {
+	//直接交换num1和num2
+	int num1_len = length(num1);
+	int num2_len = length(num2);
+	if (num1_len < num2_len) {
+		link_list *temp = NULL;
+		memcpy(temp, num1, sizeof(link_list));
+		memcpy(num1, num2, sizeof(link_list));
+		memcpy(num2, temp, sizeof(link_list));
+	}
+	link_list *longer = num1_len >= num2_len ? num1 : num2;
+	link_list *shorter = num1_len >= num2_len ? num2 : num1;
+	bool flag = 0;
+	for (; shorter != NULL;longer=longer->next,shorter=shorter->next) {
+		longer->data = longer->data + shorter->data+flag-48;
+		if (longer->data >= 10+48) { 
+			longer->data = (longer->data-48)%10+48; 
+			flag = !flag;
+		}
+		if (flag==1&&longer->next == NULL) {
+			link_list *new_node = (link_list*)malloc(sizeof(link_list));
+			new_node->data = 49;
+			longer->next = new_node;
+			new_node->next = NULL;
+		}
+		if(flag==1)flag -= 1;
+	}
+	longer=reverse(longer);
+	return num1;
+}
