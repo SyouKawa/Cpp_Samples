@@ -11,13 +11,27 @@ using std::endl;
 
 class Book{
 	public:
+		Book(const char *BookName,float fprice);
+		~Book();
 		void print();
 		void setName(const char *BookName);
 		void setPrice(float fprice);
 	private:
-		char _BookName[20];
+		char *_BookName;
 		float _fprice;
 };
+
+Book::Book(const char *BookName,float fprice)
+: _BookName(new (std::nothrow) char[strlen(BookName)+1]())
+,_fprice(fprice)
+{
+	strcpy(_BookName,BookName);
+}
+
+Book::~Book(){
+	delete [] _BookName;
+	cout<<"~Book()"<<endl;
+}
 
 void Book::print(){
 	cout<<"[BookName]:"<<_BookName<<endl;
@@ -33,9 +47,9 @@ void Book::setPrice(float fprice){
 }
 
 int main(){
-	Book Duma_Key;
-	Duma_Key.setName("Duma_Key");
-	Duma_Key.setPrice(39.50);
+	Book Duma_Key("Duma_Key",39.50);
+//	Duma_Key.setName("Duma_Key");
+//	Duma_Key.setPrice(39.50);
 	Duma_Key.print();
 
 	return 0;
